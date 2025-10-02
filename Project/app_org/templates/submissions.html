@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/submissions.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include 'navbarAdmin.html' %}
+<div class="submissions-container">
+    <header>
+        <h1>Submissions</h1>
+    </header>
+
+    <div class="submissions-grid">
+        {% for submission in submissions %}
+        <div class="submission">
+            <img src="{{ url_for('static', filename='assets/' + submission.image) }}" alt="Submission T-shirt">
+            <h2 class="submission-title">{{ submission.name | default('T-shirt Submission') }}</h2>
+            <p class="submission-description">{{ submission.description | default('A custom T-shirt design') }}</p>
+            <p class="submission-status">Status: {% if submission.approved %}Approved{% else %}Pending{% endif %}</p>
+            <div class="submission-actions">
+                {% if not submission.approved %}
+                <form action="/approve_submission/{{ submission.id }}" method="POST">
+                    <button class="vote-btn">Approve ✓</button>
+                </form>
+                <form action="/reject_submission/{{ submission.id }}" method="POST">
+                    <button class="reject-btn">Reject ✗</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="action-buttons">
+        <button class="back-btn" onclick="history.back()">Back</button>
+    </div>
+</div>
+{% endblock %}

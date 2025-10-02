@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/indexAdmin.css') }}" />
+{% endblock %}
+
+{% block content %}
+    {% include 'navbarAdmin.html' %}
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+
+    <header>
+        <h1>DETI MERCH</h1>
+    </header>
+
+    <div class="page-container" style="display: flex; justify-content: flex-start; margin-left: 0; padding: 0 20px; width: 100%;">
+        <div class="filters-column" style="margin: 0; margin-right: 10px;">
+          {% set filter_action='main.index' %}
+          {% include '_filters.html' %}
+        </div>  
+
+        <div class="products-center">
+            <div class="row product-container">
+                {% for product in products %}
+                    <div class="product col-md-12">
+                        <img
+                            class="card-img-top"
+                            src="{{ url_for('static', filename='assets/' + product.image) }}"
+                            alt="{{ product.name }}"
+                        />
+                        <h2 class="card-title">{{ product.name }}</h2>
+                        <p>{{ product.description }}</p>
+                        <p class="card-price">{{ product.price | int }}€</p>
+                        <div class="quantity-display">
+                            <span>Quantidade: {{ product.quantity | int }}</span>
+                        </div>
+                        <form action="/product_admin/{{ product.id }}" method="GET">
+                            <button class="view-product">View Product</button>
+                        </form>
+                        <form action="/delete_product/{{ product.id }}" method="POST">
+                            <button class="delete-product">Eliminar</button>
+                        </form>
+                    </div>
+                    {% if loop.index % 3 == 0 and not loop.last %}
+                        </div>
+                        <div class="row product-container">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+{% endblock %}
+
+{% include "navbar.html" %}
+
+{% block content %}
+    <!-- Mensagens Flash -->
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <!-- Secção de Busca -->
+    <main class="search-container">
+        <h1>Product Search</h1>
+        <form id="search-form" method="GET" action="{{ url_for('search.search_products') }}">
+            <div class="search-bar">
+                <input
+                    type="text"
+                    name="search"
+                    id="search"
+                    placeholder="Search for products..."
+                    autocomplete="off"
+                />
+                <button type="submit" class="botao1">
+                    <i class="bx bx-search"></i>
+                </button>
+            </div>
+        </form>
+
+        <div class="container">
+            <h2 id="search_result"></h2>
+            <div class="row" id="product-results">
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        function performSearch(query) {
+            $.ajax({
+                url: "/search/products?search=" + encodeURIComponent(query),
+                type: "GET",
+                success: function (data) {
+                    displayProductCards(data.results);
+                },
+                error: function () {
+                    $("#search_result").text("Error fetching results.");
+                    $("#product-results").html("");
+                }
+            });
+        }
+
+        function displayProductCards(products) {
+            let html = "";
+            let searchQuery = $("#search").val();
+
+            if (searchQuery) {
+                $("#search_result").text("Search results for: " + searchQuery);
+            } else {
+                $("#search_result").text("");
+            }
+
+            if (products.length === 0) {
+                html = '<p class="no-results">No products found.</p>';
+            } else {
+                for (let i = 0; i < products.length; i++) {
+                    html += '<div class="col-12 col-sm-6 col-md-4 col-lg-3">';
+                    html += '<div class="card">';
+                    html += '<img class="card-img-top" src="/static/assets/' + products[i].image + '" alt="' + products[i].name + '">';
+                    html += '<div class="card-body">';
+                    html += '<h5 class="card-title">' + products[i].name + '</h5>';
+                    html += '<p class="card-price">' + products[i].price + '€</p>';
+                    html += '<div class="card-actions">';
+                    html += '<form action="/search/products/' + products[i].id + '" method="GET">';
+                    html += '<button class="btn view-product"><i class="bx bx-show"></i> View Product</button>';
+                    html += '</form>';
+                    html += '<form action="/cart/add/' + products[i].id + '" method="POST">';
+                    html += '<button class="btn add-to-cart"><i class="bx bx-cart-add"></i> Add to Cart</button>';
+                    html += '</form>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+            }
+
+            $("#product-results").html(html);
+        }
+
+        $(document).ready(function () {
+            $("#search").on("input", function () {
+                let query = $(this).val();
+                if (query.length >= 1) {
+                    performSearch(query);
+                } else {
+                    $("#search_result").text("");
+                    $("#product-results").html("");
+                }
+            });
+
+            $("#search-form").submit(function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+{% endblock %}

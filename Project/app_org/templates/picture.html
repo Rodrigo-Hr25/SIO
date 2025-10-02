@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/picture.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="submit-container">
+    <header>
+        <h1>Submit Your Design</h1>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form action="/submit_design" method="POST" enctype="multipart/form-data" class="submit-form">
+        <div class="form-group">
+            <label for="name">Design Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description (Optional):</label>
+            <textarea id="description" name="description" placeholder="Enter a description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image">Upload Image (PNG only):</label>
+            <input type="file" id="image" name="image" accept=".png" required>
+        </div>
+        <button type="submit" class="submit-btn">Submit Design</button>
+    </form>
+
+    <div class="action-buttons">
+        <button class="back-btn" onclick="history.back()">Back</button>
+    </div>
+</div>
+{% endblock %}

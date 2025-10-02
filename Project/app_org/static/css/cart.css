@@ -1,0 +1,245 @@
+/* Estilo geral */
+body {
+  background-color: #2c2c2c;
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Container principal do carrinho */
+.cart-container {
+  padding: 40px 20px;
+  min-height: 80vh;
+}
+
+/* Título da página */
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  padding: 40px 0;
+  text-align: center;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Layout flexível do conteúdo */
+.content {
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Secção da tabela */
+.cart-table {
+  flex: 1;
+  background-color: #3a3a3a;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+}
+
+/* Estilo da tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table thead tr {
+  border-bottom: 2px solid #f55a00;
+}
+
+table thead tr th {
+  text-align: left;
+  padding: 15px 0;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+table tbody tr {
+  border-bottom: 1px solid #555;
+  transition: background 0.3s ease;
+}
+
+table tbody tr:hover {
+  background-color: #444;
+}
+
+table tbody tr:last-child {
+  border: 0;
+}
+
+table tbody tr td {
+  padding: 20px 0;
+}
+
+/* Estilo do produto */
+.product {
+  display: flex;
+  align-items: center;
+}
+
+.product img {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #555;
+}
+
+.product .info {
+  margin-left: 15px;
+}
+
+.product .info .name {
+  font-size:-1.2rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.product .info .category {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+/* Controlo de quantidade */
+.qty {
+  display: inline-flex;
+  align-items: center;
+  background: #000000;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 35px;
+}
+
+.qty button {
+  background: #f55a00;
+  border: none;
+  padding: 0 15px;
+  height: 100%;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.qty button:hover {
+  background: #ff8c00;
+}
+
+.qty input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  background: #2d2d2d;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+/* Botão de remover */
+.remove {
+  background: #f1f1f1;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: background 0.3s ease;
+}
+
+.remove:hover {
+  background: #ff5555;
+  color: #ffffff;
+}
+
+/* Secção de resumo */
+.cart-summary {
+  min-width: 300px;
+  max-width: 350px;
+}
+
+.cart-summary .box {
+  border: 1px solid #555;
+  background: #121212;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cart-summary .box header {
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-bottom: 1px solid #555;
+}
+
+.cart-summary .box .info {
+  padding: 20px;
+  font-size: 1rem;
+}
+
+.cart-summary .box .info > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #d0d0d0;
+}
+
+.cart-summary .box footer {
+  padding: 15px 20px;
+  background: #1a1a1a;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-summary .botao button {
+  border: none;
+  padding: 15px;
+  color: #ffffff;
+  background: linear-gradient(45deg, #f55a00, #ff8c00);
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.cart-summary .botao button:hover {
+  background: linear-gradient(45deg, #ff8c00, #f55a00);
+  transform: translateY(-2px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .content {
+      flex-direction: column;
+  }
+
+  .cart-summary {
+      margin-top: 20px;
+      min-width: 100%;
+  }
+
+  .product img {
+      width: 80px;
+      height: 80px;
+  }
+
+  .product .info .name {
+      font-size: 1rem;
+  }
+
+  .product .info .category {
+      font-size: 0.8rem;
+  }
+}

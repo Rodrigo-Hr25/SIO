@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/addproduct.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="add-product-container">
+    <header>
+        <h1>Add New Product</h1>
+    </header>
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <form action="/addproduct" method="POST" enctype="multipart/form-data" class="add-product-form">
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" required placeholder="Enter product name">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" placeholder="Enter product description"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price (€):</label>
+            <input type="number" id="price" name="price" step="0.01" required placeholder="Enter price">
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required placeholder="Enter quantity">
+        </div>
+
+        <div class="form-group">
+            <label for="category_id">Category:</label>
+            <select id="category_id" name="category_id" required>
+                <option value="" disabled selected>Select a category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="course_id">Associated Course (Optional):</label>
+            <select id="course_id" name="course_id">
+                <option value="">None</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="has_size" name="has_size" value="true"> Product has size
+            </label>
+            <div id="size_input" style="display: none; margin-top: 5px;">
+                <label for="size">Size:</label>
+                <input type="text" id="size" name="size" placeholder="e.g., S, M, L, or N/A">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="has_color" name="has_color" value="true"> Product has color
+            </label>
+            <div id="color_input" style="display: none; margin-top: 5px;">
+                <label for="color">Color:</label>
+                <input type="text" id="color" name="color" placeholder="e.g., Black, White, or N/A">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Product Image:</label>
+            <input type="file" id="image" name="image" accept=".png,.jpeg" required>
+            <small class="form-text">Accepted formats: .png, .jpeg</small>
+        </div>
+        <div class="form-actions">
+            <button class="back-btn" onclick="history.back()">Back</button>
+            <button type="submit" class="submit-btn">Add Product</button>
+        </div>
+    </form>
+</div>
+
+{% block scripts %}
+<script>
+    document.getElementById('has_size').addEventListener('change', function() {
+        document.getElementById('size_input').style.display = this.checked ? 'block' : 'none';
+    });
+    document.getElementById('has_color').addEventListener('change', function() {
+        document.getElementById('color_input').style.display = this.checked ? 'block' : 'none';
+    });
+</script>
+{% endblock %}
+{% endblock %}

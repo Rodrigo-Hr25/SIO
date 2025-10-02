@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contests.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="contests-container">
+    <header>
+        <h1>Contest</h1>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="submissions-grid" id="submissions-grid">
+        {% for submission in submissions %}
+        {% if submission.approved %}
+        <div class="submission {% if loop.index0 == 0 %}first{% elif loop.index0 == 1 %}second{% elif loop.index0 == 2 %}third{% endif %}" data-votes="{{ submission.votes }}" style="animation-delay: {{ loop.index0 * 0.1 }}s">
+            {% set position_map = ['1st Place', '2nd Place', '3rd Place'] %}
+            <div class="position-label">
+                {{ position_map[loop.index0] if loop.index0 < 3 else loop.index0 + 1 ~ 'th Place' }}
+            </div>
+
+            <img src="{{ url_for('static', filename='assets/' + submission.image) }}" alt="Submission T-shirt">
+            <h2 class="submission-title">{{ submission.name | default('T-shirt Submission') }}</h2>
+            <p class="submission-description">{{ submission.description | default('A custom T-shirt design') }}</p>
+            <div class="submission-actions">
+                {% if submission.id in voted_submission_ids %}
+                    <button class="vote-btn voted" disabled>Already Voted ({{ submission.votes }})</button>
+                {% else %}
+                    <form action="/vote/{{ submission.id }}" method="POST" onsubmit="setTimeout(reorderSubmissionsWithAnimation, 100);">
+                        <button class="vote-btn">Vote ✓ ({{ submission.votes }})</button>
+                    </form>
+                {% endif %}
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="action-buttons">
+        <button class="back-btn" onclick="history.back()">Back</button>
+        <form action="/picture" method="GET" class="submit-form-right">
+            <button class="submit-btn">Submit New Design</button>
+        </form>
+    </div>
+</div>
+
+<script>
+// Lightbox logic
+window.addEventListener('DOMContentLoaded', () => {
+    const lightbox = document.createElement('div');
+    lightbox.id = 'lightbox';
+    document.body.appendChild(lightbox);
+
+    const images = document.querySelectorAll('.submission img');
+    images.forEach(img => {
+        img.addEventListener('click', () => {
+            lightbox.innerHTML = '';
+            const clone = img.cloneNode();
+            lightbox.appendChild(clone);
+            lightbox.style.display = 'flex';
+        });
+    });
+
+    lightbox.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+    });
+});
+</script>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const submissions = Array.from(document.querySelectorAll('.submission'));
+    const lastPositions = JSON.parse(localStorage.getItem('submissionPositions')) || {};
+
+    submissions.forEach((sub, index) => {
+        const id = sub.querySelector('form')?.action.split('/vote/')[1];
+        const currentPos = index + 1;
+        const lastPos = lastPositions[id];
+
+        const label = sub.querySelector('.position-label');
+        const arrow = document.createElement('span');
+        arrow.style.marginLeft = '8px';
+
+        if (lastPos) {
+            if (currentPos < lastPos) {
+                arrow.textContent = '🔼';
+                arrow.title = `Subiu de ${lastPos} para ${currentPos}`;
+            } else if (currentPos > lastPos) {
+                arrow.textContent = '🔽';
+                arrow.title = `Desceu de ${lastPos} para ${currentPos}`;
+            } else {
+                arrow.textContent = '➖';
+                arrow.title = 'Manteve posição';
+            }
+            label.appendChild(arrow);
+        }
+
+        // Atualizar posições no storage
+        lastPositions[id] = currentPos;
+    });
+
+    localStorage.setItem('submissionPositions', JSON.stringify(lastPositions));
+});
+</script>
+
+{% endblock %}

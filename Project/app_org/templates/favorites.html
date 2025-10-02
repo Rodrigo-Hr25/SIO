@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/favorite.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <!-- Incluir Navbar -->
+    {% include 'navbar.html' %}
+
+    <!-- Mensagens Flash -->
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <!-- Seção Principal -->
+    <main class="favorites-container">
+        <header>
+            <h1>Favorites</h1>
+        </header>
+        <div class="row wishlist-container">
+            {% if product_details %}
+                {% for product in product_details %}
+                    <div class="wishlist-item col-md-4 col-sm-6">
+                        <img class="card-img-top" src="{{ url_for('static', filename='assets/' + product.image) }}" alt="{{ product.name }}">
+                        <div class="wishlist-info">
+                            <h2 class="card-title">{{ product.name }}</h2>
+                            <p class="card-text">{{ product.category.name }}</p>
+                            <p class="card-price">{{ product.price | int }}€</p>
+                            <div class="wishlist-actions">
+                                <form action="/product/{{ product.id }}" method="GET">
+                                    <button class="view-product"><i class="bx bx-show"></i> Ver Produto</button>
+                                </form>
+                                <form action="/favorites/remove/{{ product.id }}" method="POST">
+                                    <button class="remove-button"><i class="bx bx-trash"></i> Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">You have no favorite products yet.</p>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}

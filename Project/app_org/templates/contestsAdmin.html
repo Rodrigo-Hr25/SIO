@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contests.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include 'navbarAdmin.html' %}
+<div class="contests-container">
+    <header>
+        <h1>Contest</h1>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="submissions-grid">
+        {% for submission in submissions %}
+        {% if submission.approved %}
+        <div class="submission">
+            <div class="position-label">{{ loop.index0 + 1 }}{% if loop.index0 == 0 %}st{% elif loop.index0 == 1 %}nd{% elif loop.index0 == 2 %}rd{% else %}th{% endif %} Place</div>
+            <img src="{{ url_for('static', filename='assets/' + submission.image) }}" alt="Submission T-shirt">
+            <h2 class="submission-title">{{ submission.name | default('T-shirt Submission') }}</h2>
+            <p class="submission-description">{{ submission.description | default('A custom T-shirt design') }}</p>
+            <div class="submission-actions">
+                <button class="vote-btn" disabled>Votes: {{ submission.votes }}</button>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="action-buttons">
+        <button class="back-btn" onclick="history.back()">Back</button>
+        <form action="/submit" method="GET" class="submit-form-right">
+            <button class="submit-btn">Submissions</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
