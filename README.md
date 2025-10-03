@@ -1,47 +1,43 @@
-## Description
+# SIO – Secure Online Store
 
-This project was developed for the course of Information And Organisational Security (SIO) and the goal was to present a web application that would be an online shop to sell DETI memorabilia,
-The purpose of this delivery was to work upon the first delivery of the project, improving the security of the application and adding new features.
+## 📌 Description
 
+This project was developed as an academic project at the **University of Aveiro**, for the course **Information and Organisational Security (SIO)**. The goal was to present a web application that would serve as an online shop to sell DETI memorabilia.  
 
-## Key Issues
+The purpose of this delivery was to improve upon the first version of the project, enhancing the security of the application and adding new features. The **main focus was on security**, so the **front-end is not fully completed**.
 
-- 2.1.2 
+## 🔐 Key Issues Addressed
 
-- 2.1.7 
+During development, the project addressed various security issues, including:
 
-- 2.1.8 
+- **2.1.2**: Authentication and access control  
+- **2.1.7**: SQL injection protection  
+- **2.1.8**: Input validation and sanitization  
+- **2.2.1**: Encryption of sensitive data  
+- **2.2.3**: Secure session management  
+- **3.2.3 & 3.4.X**: Cross-Site Scripting (XSS) protection  
+- **3.3.2**: Cross-Site Request Forgery (CSRF) protection  
+- **4.2.2 & 13.2.3**: Secure password and credential management  
+- **4.3.1**: Security logging  
+- **5.3.6**: Brute-force attack protection  
+- **8.3.2**: Content Security Policy (CSP)  
+- **11.1.4**: Security monitoring and incident response  
+- **14.2.3**: Compliance with data protection regulations (e.g., GDPR)
 
-- 2.2.1 
-
-- 2.2.3 
-
-- 3.2.3 e 3.4.X 
-
-- 3.3.2 
-
-- 4.2.2 e 13.2.3 
-
-- 4.3.1 
-
-- 5.3.6 
-
-- 8.3.2 
-
-- 11.1.4 
-
-- 14.2.3 
-
-## Features
+## 🛠 Features Implemented
 
 From the list of software features given by the teacher, we implemented the following:
 
-- Password strength evaluation, requiring at least 12 characters and at most 128 according to v2.1 of the ASVS and breach verification with resource of Have I Been Pwned API.
+- **Password strength evaluation**: requiring at least 12 characters and at most 128 according to v2.1 of the ASVS, with breach verification using the Have I Been Pwned API.  
+- **Multi-factor authentication**: implemented with TOTP (Time-based One-Time Password) to authorize access to the application.  
+- **Encryption of sensitive data**: including passwords and the key used to generate the TOTP.  
 
--Multi-factor authentication impemented with TOTP (Time-based One-Time Password) to authorize access to the application.
+Other functionalities include:
 
--Encryption of sensitive data in the database including passwords and the key used to generate the TOTP.
-
+- Product catalog  
+- Shopping cart  
+- User management (registration, login, account management)  
+- Administration panel for products and orders
 
 ## RUN
 
