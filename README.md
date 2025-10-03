@@ -65,21 +65,12 @@ pip install -r requirements.txt
 
 4. Run the application:
 
-
-```bash
-./run.sh app_org <PORT>
-```
-or:
 ```bash
 ./run.sh app_sec <PORT>
 ```
 
 &emsp;&emsp;In Windows use instead:
 
-```bash
-.\run.bat app_org <PORT>
-```
-or:
 ```bash
 .\run.bat app_sec <PORT>
 ```
