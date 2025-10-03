@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+<head>
+    {% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/login.css') }}">
+    {% endblock %}
+</head>
+<!-- Load Navbar -->
+{% include 'navbar.html' %}
+
+{% block content %}
+<body>
+         <!-- Field for server messages-->
+         {%for message in get_flashed_messages()%}
+         <div class="alert alert-warning alert-dismissible fade show" role="alert">
+             {{message}}
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+         {%endfor%} 
+<!-- Pagina login -->
+<form action="/login" method="post">
+    {{ form.csrf_token }}
+    <div class="main">
+        <div class="log">
+            <h2>Log in to your account</h2>
+            <div class="textfield">
+                {{ form.username.label }} 
+                    {{ form.username(class="form-control", placeholder="Enter Username") }}
+                    {% for error in form.username.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+            </div>
+            <div class="textfield"> 
+                {{ form.password.label }} 
+                {{ form.password(class="form-control", placeholder="Enter Password") }}
+                {% for error in form.password.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="textfield">
+                {{ form.twofa_code.label }} 
+                {{ form.twofa_code(class="form-control", placeholder="Enter 2FA Code") }}
+                {% for error in form.twofa_code.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button class="btn-login">Login</button>
+        </div>
+    </div>
+    <div class = "label">
+        <label for="NotRegistered">Not Registered Yet?
+            <a href="{{ url_for('auth.register') }}">Register</a>
+        </label>
+    </div>
+</form>
+</body>
+
+{% endblock %}
